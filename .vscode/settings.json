@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "stdlib.h": "c",
+        "libft.h": "c",
+        "readline.h": "c",
+        "hashtable.h": "c",
+        "splitter.h": "c",
+        "strhandler.h": "c",
+        "stdio.h": "c",
+        "*.tcc": "c"
+    }
+}

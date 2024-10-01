@@ -1,0 +1,21 @@
+[submodule "libft"]
+	path = libft
+	url = git@github.com:PabloEscobarV/libft.git
+[submodule "get_next_line"]
+	path = get_next_line
+	url = git@github.com:PabloEscobarV/get_next_line.git
+[submodule "ft_printf"]
+	path = ft_printf
+	url = git@github.com:PabloEscobarV/ft_printf.git
+[submodule "src/ft_pow"]
+	path = src/ft_pow
+	url = git@github.com:PabloEscobarV/ft_pow.git
+[submodule "HashTable"]
+	path = HashTable
+	url = git@github.com:PabloEscobarV/HashTable.git
+[submodule "ErrorCodes"]
+	path = ErrorCodes
+	url = git@github.com:PabloEscobarV/ErrorCodes.git
+[submodule "E_Codes"]
+	path = E_Codes
+	url = git@github.com:PabloEscobarV/E_Codes.git
