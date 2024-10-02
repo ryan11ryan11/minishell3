@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 12:38:21 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/01 15:48:30 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:01:59 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,36 +39,26 @@ void	init_pipe(t_info *info)
 
 void	exec_pipe(t_info *info, int i)
 {
-	if (i > 0)
+	if (i == 0)
 	{
+		close(info->pipe[0][0]);
+		dup2(info->pipe[0][1], STDOUT_FILENO);
+		close(info->pipe[0][1]);
+		return ;
+	}
+	if (i == info->num_pipe)
+	{
+		close(info->pipe[i - 1][1]);
 		dup2(info->pipe[i - 1][0], STDIN_FILENO);
 		close(info->pipe[i - 1][0]);
+		return ;
 	}
-	if (i != info->num_pipe)
-	{
-		dup2(info->pipe[i][1], STDOUT_FILENO);
-		close(info->pipe[i][1]);
-		close(info->pipe[i][0]);
-	}
-}
-
-void	ft_pipe(t_llist *ndata, t_info *info)
-{
-	int		i;
-	t_argv	*argvt;
-
-	i = 0;
-	init_pipe(info);
-	while (ndata)
-	{
-		argvt = (t_argv *)ndata->data;
-		if (argvt->oper == 6)
-		{
-			exec_pipe(info, i);
-			i ++ ;
-		}
-		ndata = ndata->next;
-	}
+	close(info->pipe[i - 1][1]);
+	dup2(info->pipe[i - 1][0], STDIN_FILENO);
+	close(info->pipe[i - 1][0]);
+	close(info->pipe[i][0]);
+	dup2(info->pipe[i][1], STDOUT_FILENO);
+	close(info->pipe[i][1]);
 }
 
 void	free_pipe(t_info *info)
