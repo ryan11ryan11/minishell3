@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 18:42:36 by Pablo Escob       #+#    #+#             */
-/*   Updated: 2024/10/03 19:17:56 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:13:06 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ int	main(int argc, char **argv, char **envp)
 	splqt = crtsplqtt(QTS, RDR, SPLN, SPLTS);
 	info.env_set = 0;
 	info.new_envp = NULL;
-	while (1)
+	while (1) // $?
 	{
-		info.errcode = 9999;
+		info.errcode = 42;
 		ft_signal();
 		line = readline("Pablo Escobar:\t");
 		if (line == NULL || terminatation(line) == 1)
@@ -97,10 +97,10 @@ int	main(int argc, char **argv, char **envp)
 		argvt = (t_argv *)(ndata->data);
 		info_setting(ndata, &info);
 		exec_command(ndata, &info, line);
-		printf("End code:%d\n", info.errcode);
-		//llistiter(ndata, printargvtllist);
+		//printf("End code:%d\n", info.errcode);
+		llistiter(ndata, printargvtllist);
 		// if (ndata)
-		// 	printmatrix(((t_argv *)(ndata->data))->argv);
+		//printmatrix(((t_argv *)(ndata->data))->argv);
 		llistclear(&ndata, freeargvt);
 		llistclear(&spliterll, freeargt);
 		free(line);
