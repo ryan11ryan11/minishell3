@@ -1,0 +1,16 @@
+total 960
+drwxr-xr-x 6 junhhong 2023_wolfsburg    190 10월  7 10:13 .
+drwxr-xr-x 8 junhhong 2023_wolfsburg    223 10월  4 11:37 ..
+-rwxr-xr-x 1 junhhong 2023_wolfsburg  16272 10월  3 14:50 a.out
+drwxr-xr-x 2 junhhong 2023_wolfsburg     47  8월  5 18:15 hdrs
+-rw-r--r-- 1 junhhong 2023_wolfsburg      0 10월  7 10:14 hello
+-rw-r--r-- 1 junhhong 2023_wolfsburg 565010 10월  7 09:24 libnetdata.a
+-rw-r--r-- 1 junhhong 2023_wolfsburg   2906 10월  1 10:29 Makefile
+-rwxr-xr-x 1 junhhong 2023_wolfsburg 170512 10월  7 09:29 minishell
+drwxr-xr-x 2 junhhong 2023_wolfsburg   8192 10월  7 09:24 objs
+drwxr-xr-x 2 junhhong 2023_wolfsburg     77  9월 29 16:39 src
+-rw-r--r-- 1 junhhong 2023_wolfsburg  30720  9월 30 20:42 Terminal
+-rwxr-xr-x 1 junhhong 2023_wolfsburg 170584 10월  7 10:02 test
+-rw-r--r-- 1 junhhong 2023_wolfsburg   3353 10월  7 10:02 test.c
+drwxr-xr-x 4 junhhong 2023_wolfsburg    268 10월  7 09:30 tester
+-rwxrwxrwx 1 junhhong 2023_wolfsburg   2473 10월  3 15:19 yoyo.c
