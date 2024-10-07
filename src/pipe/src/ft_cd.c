@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:56:01 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/04 11:05:21 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/07 13:14:49 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <string.h>
 #include <sys/wait.h>
 
-int	no_argument(t_argv *argvt, t_info *info)
+int	no_argument(t_argv *argvt)
 {
 	char	*home;
 
@@ -38,7 +38,7 @@ int	no_argument(t_argv *argvt, t_info *info)
 	return (-1);
 }
 
-int	slash_up(t_argv *argvt, t_info *info, char *input)
+int	slash_up(t_argv *argvt, char *input)
 {	
 	if (input[0] == '/' || strcmp(input, "..") == 0)
 	{
@@ -53,17 +53,17 @@ int	slash_up(t_argv *argvt, t_info *info, char *input)
 	return (-1);
 }
 
-int	ft_cd(t_argv *argvt, t_info *info)
+int	ft_cd(t_argv *argvt)
 {
 	char	*new_path;
 	char	*input;
 	int		result;
 
 	input = (char *)argvt->argv[1];
-	result = no_argument(argvt, info);
+	result = no_argument(argvt);
 	if (result >= 0)
 		return (result);
-	result = slash_up(argvt, info, input);
+	result = slash_up(argvt, input);
 	if (result >= 0)
 		return (result);
 	new_path = new_path_maker(input);

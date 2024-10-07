@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:39:42 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/03 19:18:23 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/07 13:18:32 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ pid_t	*assign_pid(int num_args)
 	return (new_pid);
 }
 
-char	*absolute_path(t_llist *ndata, t_info *info)
+char	*absolute_path(t_llist *ndata)
 {
 	t_argv	*argvt;
 	
 	argvt = (t_argv *)ndata->data;
 	if (access(argvt->argv[0], X_OK) == 0)
-		return (argvt->argv[0]);
+		return ((char *)argvt->argv[0]);
 	return (NULL);
 }
 
@@ -58,7 +58,7 @@ char	*pathfinder(char *command, t_info *info, t_llist *ndata)
 	i = 0;
 	if (!info->patharr || !command || !info->patharr)
 		return (NULL);
-	tmp = absolute_path(ndata, info);
+	tmp = absolute_path(ndata);
 	if (tmp != NULL)
 		return (ft_strdup(tmp));
 	while (info->patharr[i] != NULL)
@@ -105,7 +105,7 @@ void	doublearr_free(char ***arr)
 	*arr = NULL;
 }
 
-char	*ft_get_env(t_info *info, char *name)
+char	*ft_get_env(t_info *info)
 {
 	t_envlist	*n_envlist;
 
@@ -126,7 +126,7 @@ void	info_setting(t_llist *ndata, t_info *info)
 	char	*originalpath;
 	char	*fullpath;
 
-	originalpath = ft_get_env(info, "PATH=/");
+	originalpath = ft_get_env(info);
 	if (!originalpath)
 		info->patharr = NULL;
 	else

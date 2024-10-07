@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:01:32 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/04 14:03:06 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:13:16 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ int	print_argv(t_argv *argvt, int i)
 			print_directory();
 		}
 		if (argvt->argv[i] == NULL)
-			return ;
+			return (1);
 		ft_putstr_fd(argvt->argv[i], 1);
 		if (argvt->argv[i + 1] != NULL)
 			ft_putstr_fd(" ", 1);
@@ -186,28 +186,3 @@ int	ft_echo(t_argv *argvt, char *line)
 	doublearr_free(&argva);
 	return (0);
 }
-
-// void	ft_echo2(t_argv *argvt, char *line, t_info *info)
-// {
-// 	int		i;
-// 	int		len;
-// 	char	**argva;
-
-// 	i = 1;
-// 	argva = argv_maker(line);
-// 	len = ft_strlen(argva[i]);
-// 	while (argvt->argv[i] && all_n((char *)argvt->argv[i], len) \
-// 	== 1 && (ft_strcmp3(argvt->argv[i], "-n", 2) == 0))
-// 	{
-// 		i ++ ;
-// 		len = ft_strlen(argva[i]);
-// 	}
-// 	while (argvt->argv[i] != NULL)
-// 	{
-// 		if (argvt->argv[i] == NULL)
-// 			return ;
-// 		i ++ ;
-// 	}
-// 	info->errcode = 0;
-// 	doublearr_free(&argva);
-// }

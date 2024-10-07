@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:09:11 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/04 12:10:31 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/07 13:13:55 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include <string.h>
 #include <termios.h>
 #include <signal.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 #include <dirent.h>
 #define PATH_MAX 4096
@@ -43,7 +44,7 @@ char	*slashadd(char *path);
 char	*commandadd(char *slashadded, char *command);
 pid_t	*assign_pid(int num_args);
 char	*pathfinder(char *command, t_info *info, t_llist *ndata);
-char	*absolute_path(t_llist *ndata, t_info *info);
+char	*absolute_path(t_llist *ndata);
 void	count_ndata(t_llist *ndata, t_info *info);
 void	doublearr_free(char ***arr);
 void	info_setting(t_llist *ndata, t_info *info);
@@ -52,8 +53,8 @@ void	exec_command(t_llist *ndata, t_info *info, char *line);
 void	all_pipe_close(t_info *info);
 void	child_process(t_llist *ndata, t_info *info, int i, char *line);
 void	parent_process(t_info *info);
-int		ft_cd(t_argv *argvt, t_info *info);
-int		no_argument(t_argv *argvt, t_info *info);
+int		ft_cd(t_argv *argvt);
+int		no_argument(t_argv *argvt);
 char	*new_path_maker(char *input);
 int		ft_strcmp2(const char *s1, const char *s2);
 int		builtin_exception(t_argv *argvt);
@@ -103,4 +104,4 @@ void	set_terminal_print_on(void);
 //void	ft_env2(t_info *data, t_argv *argvt);
 //int		ft_pwd2(t_info *info);
 //void	ft_echo2(t_argv *argvt, char *line, t_info *info);
-char	*ft_get_env(t_info *info, char *name);
+char	*ft_get_env(t_info *info);
