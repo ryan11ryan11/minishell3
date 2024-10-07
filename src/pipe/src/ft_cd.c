@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:56:01 by junhhong          #+#    #+#             */
-/*   Updated: 2024/09/21 17:57:25 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:05:21 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,12 @@ int	no_argument(t_argv *argvt, t_info *info)
 		home = getenv("HOME");
 		if (chdir(home) == -1)
 		{
-			info->errcode = 1;
-			perror("chdir failed");
-			return (-1);
+			perror("Error:");
+			return (errno);
 		}
-		else
-		{
-			info->errcode = 0;
-			return (1);
-		}
+		return (0);
 	}
-	return (0);
+	return (-1);
 }
 
 int	slash_up(t_argv *argvt, t_info *info, char *input)
@@ -49,36 +44,35 @@ int	slash_up(t_argv *argvt, t_info *info, char *input)
 	{
 		if (chdir(argvt->argv[1]) == -1)
 		{
-			perror("chdir failed");
-			info->errcode = 1;
-			return (-1);
+			perror("Error:");
+			return (errno);
 		}
 		else
-		{
-			info->errcode = 0;
-			return (1);
-		}
+			return (0);
 	}
-	return (0);
+	return (-1);
 }
 
-void	ft_cd(t_argv *argvt, t_info *info)
+int	ft_cd(t_argv *argvt, t_info *info)
 {
 	char	*new_path;
 	char	*input;
+	int		result;
 
-	printf("ft_cd\n");
 	input = (char *)argvt->argv[1];
-	if (no_argument(argvt, info) || slash_up(argvt, info, input))
-		return ;
+	result = no_argument(argvt, info);
+	if (result >= 0)
+		return (result);
+	result = slash_up(argvt, info, input);
+	if (result >= 0)
+		return (result);
 	new_path = new_path_maker(input);
 	if (chdir(new_path) == -1)
 	{
-		perror("chdir failed");
-		info->errcode = 1;
-		return ;
+		perror("Error:");
+		free (new_path);
+		return (1);
 	}
-	else
-		info->errcode = 0;
 	free (new_path);
+	return (0);
 }

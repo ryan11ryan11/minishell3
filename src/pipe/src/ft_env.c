@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 13:46:30 by junhhong          #+#    #+#             */
-/*   Updated: 2024/09/21 18:11:57 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:27:22 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@
 #include <stdio.h>
 #include <readline/readline.h>
 
-void	ft_env2(t_info *data, t_argv *argvt)
-{
-	t_envlist	*tmp;
+// void	ft_env2(t_info *data, t_argv *argvt)
+// {
+// 	t_envlist	*tmp;
 
-	tmp = data->envlist;
-	if (argvt->argv[1])
-	{
-		data->errcode = 127;
-		return ;
-	}
-	data->errcode = 0;
-}
+// 	tmp = data->envlist;
+// 	if (argvt->argv[1])
+// 	{
+// 		data->errcode = 127;
+// 		return ;
+// 	}
+// 	data->errcode = 0;
+// }
 
-void	ft_env(t_info *data, t_argv *argvt)
+int	ft_env(t_info *data, t_argv *argvt)
 {
 	t_envlist	*tmp;
 
@@ -38,8 +38,7 @@ void	ft_env(t_info *data, t_argv *argvt)
 	if (argvt->argv[1])
 	{
 		ft_putstr_fd("env: No such file or directory\n", 2);
-		data->errcode = 1;
-		return ;
+		return (127);
 	}
 	while (tmp != NULL)
 	{
@@ -50,5 +49,5 @@ void	ft_env(t_info *data, t_argv *argvt)
 		}
 		tmp = tmp->next;
 	}
-	data->errcode = 0;
+	return (0);
 }

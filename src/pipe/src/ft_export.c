@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:47:21 by junhhong          #+#    #+#             */
-/*   Updated: 2024/09/21 17:06:19 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:26:33 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,28 +79,13 @@ int	ft_export(t_info *info, char *line)
 	new_arr = new_arr_maker(line);
 	if (new_arr[1] == NULL || ft_strlcmp_limited(new_arr[1], "|") == 0)
 	{
-		info->errcode = 0;
+		print_all(info->envlist);
 		doublearr_free(&new_arr);
-		return (1);
+		return (0);
 	}
 	fix_arr(new_arr);
 	add_to_list(new_arr, info);
 	envp_maker(info);
 	doublearr_free(&new_arr);
-	return (1);
-}
-
-int	ft_export2(t_info *info, char *line)
-{
-	char	**new_arr;
-
-	new_arr = new_arr_maker(line);
-	if (new_arr[1] == NULL || ft_strlcmp_limited(new_arr[1], "|") == 0)
-	{
-		print_all(info->envlist);
-		doublearr_free(&new_arr);
-		return (1);
-	}
-	doublearr_free(&new_arr);
-	return (1);
+	return (0);
 }

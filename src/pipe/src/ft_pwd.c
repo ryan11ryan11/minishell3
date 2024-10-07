@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:32:28 by junhhong          #+#    #+#             */
-/*   Updated: 2024/09/21 18:22:39 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:11:37 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 #include "../hdrs/pipe.h"
 #include <unistd.h>
 
-int	ft_pwd2(t_info *info)
-{
-	char	path[4096];
+// int	ft_pwd2(t_info *info)
+// {
+// 	char	path[4096];
 
-	if (getcwd(path, 4096) != NULL)
-	{
-		info->errcode = 0;
-		return (1);
-	}
-	info->errcode = 1;
-	return (0);
-}
+// 	if (getcwd(path, 4096) != NULL)
+// 	{
+// 		info->errcode = 0;
+// 		return (1);
+// 	}
+// 	info->errcode = 1;
+// 	return (0);
+// }
 
 int	ft_pwd(void)
 {

@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:09:11 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/01 14:28:52 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 12:10:31 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 #include <termios.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <dirent.h>
+#define PATH_MAX 4096
 
 int		count_pipe(t_llist *netdata);
 int		**assign_pipe(int num_pipe);
@@ -49,8 +51,8 @@ int		all_component_check(t_llist *ndata, t_info *info);
 void	exec_command(t_llist *ndata, t_info *info, char *line);
 void	all_pipe_close(t_info *info);
 void	child_process(t_llist *ndata, t_info *info, int i, char *line);
-void	parent_process(t_info *info, t_llist *ndata, int i);
-void	ft_cd(t_argv *argvt, t_info *info);
+void	parent_process(t_info *info);
+int		ft_cd(t_argv *argvt, t_info *info);
 int		no_argument(t_argv *argvt, t_info *info);
 char	*new_path_maker(char *input);
 int		ft_strcmp2(const char *s1, const char *s2);
@@ -58,7 +60,7 @@ int		builtin_exception(t_argv *argvt);
 int		builtin_exception2(char *arr);
 int		ft_strcmp2(const char *s1, const char *s2);
 int		builtin(t_argv *argvt, t_info *info, char *line);
-void	ft_echo(t_argv *argvt, char *line);
+int 	ft_echo(t_argv *argvt, char *line);
 int		ft_pwd(void);
 int		count_arg(t_argv *argvt);
 void	envlist_addback(t_envlist **lst, t_envlist *new);
@@ -66,7 +68,7 @@ t_envlist	*envlist_new(void *content);
 int		env_size_checker(char *env[]);
 int		envlistmaker(t_info *info, char *env[]);
 t_envlist	*ft_envlast(t_envlist *lst);
-void	ft_env(t_info *data, t_argv *argvt);
+int		ft_env(t_info *data, t_argv *argvt);
 int		ft_unset(t_info *info, t_argv *argvt);
 void	envlistclear(t_envlist *envlist);
 int		ft_strlcmp_limited(const char *s1, const char *s2);
@@ -77,7 +79,6 @@ char	*remove_quo(char *arr);
 void	fix_arr(char **arr);
 int		add_to_list(char **arr, t_info *info);
 int		ft_export(t_info *info, char *line);
-int		ft_export2(t_info *info, char *line);
 int		is_duplicate(char *name, t_envlist *envlist, char *arr, t_info *info);
 char	*quo_add(char *arr);
 void	print_all(t_envlist *envlist);
@@ -99,7 +100,7 @@ void	error_exit(char *msg, int error_number);
 
 void	set_terminal_print_off(void);
 void	set_terminal_print_on(void);
-void	ft_env2(t_info *data, t_argv *argvt);
-int		ft_pwd2(t_info *info);
-void	ft_echo2(t_argv *argvt, char *line, t_info *info);
+//void	ft_env2(t_info *data, t_argv *argvt);
+//int		ft_pwd2(t_info *info);
+//void	ft_echo2(t_argv *argvt, char *line, t_info *info);
 char	*ft_get_env(t_info *info, char *name);

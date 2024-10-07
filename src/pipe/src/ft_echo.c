@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 12:01:32 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/01 10:45:57 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 14:03:06 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,108 @@ int	all_n(char *txt, int len)
 	return (1);
 }
 
-void	ft_echo(t_argv *argvt, char *line)
+int		filenum_count(void)
+{
+	struct dirent	*t_dirent;
+	DIR				*tmp;
+	int	i;
+
+	tmp = opendir(".");
+	i = 1;
+	t_dirent = readdir(tmp);
+	while (t_dirent != NULL)
+	{
+		if (t_dirent->d_name[0] == '.')
+		{
+			t_dirent = readdir(tmp);
+			continue;
+		}
+		i ++;
+		t_dirent = readdir(tmp);
+	}
+	return (i);
+}
+
+char	**filearr_maker(int file_num)
+{
+	char **file_arr;
+	
+	file_arr = 	(char **)malloc(sizeof(char *) * (file_num + 1));
+	file_arr[file_num] = NULL;
+	return (file_arr);
+}
+
+char	**filename_arr_maker(DIR *dir)
+{
+	struct dirent	*t_dirent;
+	char			**file_name_arr;
+	int				file_num;
+	int				i;
+
+	i = 0;
+	file_num = filenum_count();
+	file_name_arr = filearr_maker(file_num);
+	t_dirent = readdir(dir);
+	while (t_dirent != NULL)
+	{
+		if (t_dirent->d_name[0] == '.')
+		{
+			t_dirent = readdir(dir);
+			continue;
+		}
+		file_name_arr[i] = ft_strdup(t_dirent->d_name);
+		i ++;
+		t_dirent = readdir(dir);
+	}
+	if (i == 0)
+		return (NULL);
+	file_name_arr[i] = NULL;
+	closedir(dir);
+	return (file_name_arr);
+}
+
+int	print_directory()
+{
+	DIR				*dir;
+	char			**filename_arr;
+	int				i;
+
+	i = 0;
+	dir = opendir(".");
+	if (!dir)
+	{
+		perror("Error:");
+		return (1);
+	}
+	filename_arr = filename_arr_maker(dir);
+	while(filename_arr[i] != NULL)
+	{
+		ft_putstr_fd(filename_arr[i], 1);
+		write(1, " ", 1);
+		i ++;
+	}
+	return (0);
+}
+
+int	print_argv(t_argv *argvt, int i)
+{
+	while (argvt->argv[i] != NULL)
+	{
+		if (ft_strlcmp_limited(argvt->argv[i], "*") == 0)
+		{
+			i ++ ;
+			print_directory();
+		}
+		if (argvt->argv[i] == NULL)
+			return ;
+		ft_putstr_fd(argvt->argv[i], 1);
+		if (argvt->argv[i + 1] != NULL)
+			ft_putstr_fd(" ", 1);
+		i ++ ;
+	}
+}
+
+int	ft_echo(t_argv *argvt, char *line)
 {
 	int		option;
 	int		i;
@@ -79,39 +180,34 @@ void	ft_echo(t_argv *argvt, char *line)
 		len = ft_strlen(argva[i]);
 		option = 1;
 	}
-	while (argvt->argv[i] != NULL)
-	{
-		if (argvt->argv[i] == NULL)
-			return ;
-		ft_putstr_fd(argvt->argv[i++], 1);
-		ft_putstr_fd(" ", 1);
-	}
+	print_argv(argvt, i);
 	if (option == 0)
 		write (1, "\n", 1);
 	doublearr_free(&argva);
+	return (0);
 }
 
-void	ft_echo2(t_argv *argvt, char *line, t_info *info)
-{
-	int		i;
-	int		len;
-	char	**argva;
+// void	ft_echo2(t_argv *argvt, char *line, t_info *info)
+// {
+// 	int		i;
+// 	int		len;
+// 	char	**argva;
 
-	i = 1;
-	argva = argv_maker(line);
-	len = ft_strlen(argva[i]);
-	while (argvt->argv[i] && all_n((char *)argvt->argv[i], len) \
-	== 1 && (ft_strcmp3(argvt->argv[i], "-n", 2) == 0))
-	{
-		i ++ ;
-		len = ft_strlen(argva[i]);
-	}
-	while (argvt->argv[i] != NULL)
-	{
-		if (argvt->argv[i] == NULL)
-			return ;
-		i ++ ;
-	}
-	info->errcode = 0;
-	doublearr_free(&argva);
-}
+// 	i = 1;
+// 	argva = argv_maker(line);
+// 	len = ft_strlen(argva[i]);
+// 	while (argvt->argv[i] && all_n((char *)argvt->argv[i], len) \
+// 	== 1 && (ft_strcmp3(argvt->argv[i], "-n", 2) == 0))
+// 	{
+// 		i ++ ;
+// 		len = ft_strlen(argva[i]);
+// 	}
+// 	while (argvt->argv[i] != NULL)
+// 	{
+// 		if (argvt->argv[i] == NULL)
+// 			return ;
+// 		i ++ ;
+// 	}
+// 	info->errcode = 0;
+// 	doublearr_free(&argva);
+// }

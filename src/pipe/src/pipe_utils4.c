@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:26:03 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/01 11:22:04 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:27:44 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	all_component_check(t_llist *ndata, t_info *info)
 		else
 			return (-1);
 		path = pathfinder(command, info, ndata);
-		if (!path) // here problem
+		if (!path)
 			return (-1);
 		free (path);
 		tmp = tmp->next;
@@ -93,9 +93,12 @@ void	error_exit(char *msg, int error_number)
 
 void	builtin_situation(t_argv *argvt, t_info *info, char *line)
 {
+	int	code;
+
+	code = 0;
 	if (builtin_exception(argvt) == 1)
 	{
-		builtin(argvt, info, line);
-		exit(0);
+		code = builtin(argvt, info, line);
+		exit(code);
 	}
 }

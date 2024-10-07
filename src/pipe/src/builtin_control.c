@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:57:20 by junhhong          #+#    #+#             */
-/*   Updated: 2024/09/21 17:58:12 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:28:29 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,17 @@ int	ft_strcmp2(const char *s1, const char *s2)
 int	builtin(t_argv *argvt, t_info *info, char *line)
 {
 	if (ft_strlcmp_limited(argvt->argv[0], "echo") == 0)
-		ft_echo(argvt, line);
+		return (ft_echo(argvt, line));
 	if (ft_strlcmp_limited(argvt->argv[0], "cd") == 0)
-		ft_cd(argvt, info);
+		return (ft_cd(argvt, info));
 	if (ft_strlcmp_limited(argvt->argv[0], "pwd") == 0)
-		ft_pwd();
+		return(ft_pwd());
 	if (ft_strlcmp_limited(argvt->argv[0], "export") == 0)
-		ft_export2(info, line);
+		return(ft_export(info, argvt));
 	if (ft_strlcmp_limited(argvt->argv[0], "env") == 0)
-		ft_env(info, argvt);
+		return(ft_env(info, argvt));
 	if (ft_strlcmp_limited(argvt->argv[0], "unset") == 0)
-		ft_unset(info, argvt);
+		return(ft_unset(info, argvt));
 	return (0);
 }
 
