@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:41:00 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/07 18:50:35 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:32:34 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	case_outfile(t_argv *argvt)
 		fd = open(argvt->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (argvt->appnd == 1)
 		fd = open(argvt->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
+	{
+		perror("Error:");
+		exit (1);
+	}
 	dup2(fd, STDOUT_FILENO);
 	close (fd);
 }
@@ -50,12 +55,8 @@ char	*get_last_word(char *buffer, int index)
 	if (!split)
 		return (NULL);
 	while(split[i + 1] != NULL)
-	{
-		printf("split[%d]:%s\n",i,split[i]);
 		i ++;
-	}
 	last = ft_strdup(split[i]);
-	printf("i:%d last:%s\n", i,last);
 	doublearr_free(&split);
 	free(tmp);
 	return (last);
@@ -70,29 +71,44 @@ void	case_heredoc(t_llist *ndata)
 	char	*last_word;
 	t_llist	*next_ndata;
 	t_argv 	*next_argvt;
+	int		fd[2];
+	pid_t	pid;
 
-	next_ndata = ndata->next;
-	next_argvt = next_ndata->data;
-	delimiter = (char *)(next_argvt->argv[0]);
-	printf("DELIMITER::%s\n",delimiter);
-	total_byte = 0;
-	int j = 0;
-	while(j < 4)
-	{	
-		write(1, "OH>", 3);
-		byte_read = read(STDIN_FILENO, buffer + total_byte, sizeof(buffer) - total_byte - 1);
-		total_byte = total_byte + byte_read;
-		last_word = get_last_word(buffer, total_byte - 1);
-		printf("last_word:%s delimiter:%s\n",last_word, delimiter);
-		if (ft_strlcmp_limited(last_word, delimiter == 0))
-		{
-			printf("#########broken##############\n");
-			break;
-		}
-		j ++ ;
+	if (!ndata->next)
+	{
+		ft_putstr_fd("syntax error\n", 2);
+		exit (2);
 	}
-	buffer[total_byte - 1] = '\0';
-	printf("result :: %s\n", buffer);
+	pipe(fd);
+	pid = fork();
+	if (pid == 0)
+	{
+		next_ndata = ndata->next;
+		next_argvt = next_ndata->data;
+		delimiter = (char *)(next_argvt->argv[0]);
+		total_byte = 0;
+		while(1)
+		{	
+			write(1, "> ", 2);
+			byte_read = read(STDIN_FILENO, buffer + total_byte, sizeof(buffer) - total_byte - 1);
+			total_byte = total_byte + byte_read;
+			last_word = get_last_word(buffer, total_byte - 1);
+			if (ft_strlcmp_limited(last_word, delimiter) == 0)
+				break;
+		}
+		buffer[total_byte - 1 - ft_strlen(last_word)] = '\0';
+		close(fd[0]);
+		write(fd[1], buffer, ft_strlen(buffer));
+		close(fd[1]);
+		exit (0);
+	}
+	else
+	{
+		close(fd[1]);
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		waitpid(pid, NULL, 0);
+	}
 }
 
 
@@ -101,15 +117,15 @@ int	case_infile(t_llist *ndata)
 	int		fd;
 	t_argv	*argvt;
 
-	if (!ndata->next)
-	{
-		ft_putstr_fd("syntax error\n", 2);
-		exit (2);
-	}
 	argvt = ndata->data;
 	if (argvt->appnd == 0)
 	{
 		fd = open(argvt->infile, O_RDONLY);
+		if (fd == -1)
+		{
+			perror("Error:");
+			exit (1);
+		}
 		dup2(fd, STDIN_FILENO);
 		close (fd);
 	}
@@ -128,14 +144,16 @@ void	child_process(t_llist *ndata, t_info *info, int i, char *line)
 		prv_argvt = ndata->previous->data;
 	if (prv_argvt->oper == 1)
 		exit (0);
+	if ((argvt->oper == 6) || (prv_argvt && prv_argvt->oper == 6))
+		exec_pipe(info, i);
 	if (argvt->outfile != NULL)
 		case_outfile(argvt);
 	if (argvt->infile != NULL)
 		case_infile(ndata);
 	if (argvt->oper == 1)
 		case_heredoc(ndata); // argv[0]이상 있을 경우?
-	if ((argvt->oper == 6) || (prv_argvt && prv_argvt->oper == 6))
-		exec_pipe(info, i);
+	// if ((argvt->oper == 6) || (prv_argvt && prv_argvt->oper == 6))
+	// 	exec_pipe(info, i);
 	if (argvt->argv[0])
 		command = (char *)argvt->argv[0];
 	else
@@ -202,17 +220,17 @@ int	exec_command_errcheck(t_llist *ndata, t_info *info)
 int	parent_process_exec(t_argv *argvt, t_info *info, char *line)
 {
 	if (ft_strlcmp_limited(argvt->argv[0], "export") == 0)
-		ft_export(info, line);
+		return(ft_export(info, line));
 	if (ft_strlcmp_limited(argvt->argv[0], "unset") == 0)
-		ft_unset(info, argvt);
+		return(ft_unset(info, argvt));
 	if (ft_strlcmp_limited(argvt->argv[0], "cd") == 0)
 		return (ft_cd(argvt));
 	if (ft_strlcmp_limited(argvt->argv[0], "env") == 0)
-		ft_env(info, argvt);
+		return(ft_env(info, argvt));
 	if (ft_strlcmp_limited(argvt->argv[0], "pwd") == 0)
-		ft_pwd();
+		return(ft_pwd());
 	if (ft_strlcmp_limited(argvt->argv[0], "echo") == 0)
-		ft_echo(argvt, line);
+		return(ft_echo(argvt, line));
 	return (1);
 }
 
@@ -224,6 +242,10 @@ int		is_pipe(t_llist *ndata)
 	{
 		argvt = (t_argv *)ndata->data;
 		if (argvt->oper == 6)
+			return (1);
+		if (argvt->infile != NULL)
+			return (1);
+		if (argvt->outfile != NULL)
 			return (1);
 		ndata = ndata->next;
 	}

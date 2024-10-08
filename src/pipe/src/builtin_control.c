@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 11:57:20 by junhhong          #+#    #+#             */
-/*   Updated: 2024/10/07 13:15:02 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/08 11:02:59 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ int	ft_strcmp2(const char *s1, const char *s2)
 
 int	builtin(t_argv *argvt, t_info *info, char *line)
 {
+	int test;
+	
 	if (ft_strlcmp_limited(argvt->argv[0], "echo") == 0)
 		return (ft_echo(argvt, line));
 	if (ft_strlcmp_limited(argvt->argv[0], "cd") == 0)

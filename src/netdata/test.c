@@ -6,7 +6,7 @@
 /*   By: junhhong <junhhong@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 18:42:36 by Pablo Escob       #+#    #+#             */
-/*   Updated: 2024/10/07 13:15:16 by junhhong         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:27:35 by junhhong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(int argc, char **argv, char **envp)
 		argvt = (t_argv *)(ndata->data);
 		info_setting(ndata, &info);
 		exec_command(ndata, &info, line);
-		//printf("End code:%d\n", info.errcode);
+		printf("End code:%d\n", info.errcode);
 		llistiter(ndata, printargvtllist);
 		// if (ndata)
 		//printmatrix(((t_argv *)(ndata->data))->argv);
